@@ -9,6 +9,7 @@ the standard input and makes it rainbow-colored.
 - lmaocat doesn't have 8-bit color support, it will just print out the normal text.<br>
   This is because truecolor is supported pretty much everywhere nowadays.
 
+![Could not load Image!](./assets/help.png "lmaocat --help")
 
 ## Installation
 Installing dependencies [git, cmake, g++] (for example on debian based distros):
