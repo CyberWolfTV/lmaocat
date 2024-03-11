@@ -1,0 +1,16 @@
+-std=c++20
+
+-Isrc/
+
+-O3
+-fno-tree-vectorize
+
+-Wall
+-Wextra
+-Wpedantic
+-Wsign-conversion
+-Wunused-macros
+-Wno-endif-labels
+-Warith-conversion
+-Wformat=2
+-Werror
