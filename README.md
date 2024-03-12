@@ -1,10 +1,9 @@
 # lmaocat
-This program is a clone of [lolcat](https://github.com/busyloop/lolcat), it takes input from a file or from <br>
-the standard input and makes it rainbow-colored.
+This program is a clone of [lolcat](https://github.com/busyloop/lolcat), it takes input from a file or from the standard input and makes it rainbow-colored.
 - It's over 10x faster, because lmaocat is written in C++.
-- lmaocat, unlike other clones, calculates the colors the same way<br>
+- lmaocat, unlike other clones, calculates the colors the same way
   the original tool did it, which leads to cleaner-looking colors.
-- The only required dependencies of lmaocat are a C++ compiler and the<br>
+- The only required dependencies of lmaocat are a C++ compiler and the
   C++ standard library, even though the installation is easier with cmake installed
 - lmaocat doesn't have 8-bit color support, it will just print out the normal text.<br>
   This is because truecolor is supported pretty much everywhere nowadays.
@@ -12,7 +11,7 @@ the standard input and makes it rainbow-colored.
 ![Could not load Image!](./assets/help.png "lmaocat --help")
 
 ## Installation
-Installing dependencies [git, cmake, g++] (for example on debian based distros):
+Installing dependencies [git, cmake, g++ / clang] (for example on debian based distros):
 ```shell
 sudo apt install git cmake build-essential
 ```
@@ -25,6 +24,8 @@ mkdir lmaocat/build
 cd lmaocat/build
 cmake ..
 make
+
+command -v doas && alias sudo="$(command -v doas)"
 
 sudo chown root lmaocat
 sudo mv lmaocat /usr/bin/lmaocat
