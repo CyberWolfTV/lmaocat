@@ -4,6 +4,7 @@
 #include <cstdio>
 #include <csignal>
 #include <fstream>
+#include <sstream>
 #include <iostream>
 #include <filesystem>
 

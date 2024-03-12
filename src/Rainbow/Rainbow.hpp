@@ -5,7 +5,7 @@
 #include <chrono>
 #include <string>
 #include <cstddef>
-#include <istream>
+#include <sstream>
 
 #include "Args/Args.hpp"
 #include "ANSI/ANSI.hpp"
