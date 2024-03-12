@@ -6,8 +6,9 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_compile_options(
         -O3 -fno-tree-vectorize
-        -Wall -Wextra -Wpedantic -Wsign-conversion -Wunused-macros
-        -Wno-endif-labels -Warith-conversion -Wformat=2 -Werror
+        -Werror -Wall -Wextra -Wpedantic -Wsign-conversion
+        -Wno-endif-labels -Wformat=2 -Wunused-macros
+        -Wconversion -Wfloat-conversion
 )
 
 include_directories(src)
