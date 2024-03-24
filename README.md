@@ -5,8 +5,8 @@ This program is a clone of [lolcat](https://github.com/busyloop/lolcat), it take
   the original tool did it, which leads to cleaner-looking colors.
 - The only required dependencies of lmaocat are a C++ compiler and the
   C++ standard library, even though the installation is easier with cmake installed
-- lmaocat doesn't have 8-bit color support, it will just print out the normal text.<br>
-  This is because truecolor is supported pretty much everywhere nowadays.
+- lmaocat doesn't have 8-bit color support, it will just print out the normal 
+  text. This is because truecolor is supported pretty much everywhere nowadays.
 
 ![Could not load Image!](./assets/help.png "lmaocat --help")
 
@@ -43,4 +43,4 @@ lmaocat --help
 ## Disclaimer
 - This project is not related to [lolcat](https://github.com/busyloop/lolcat) in any way, it's just an independent clone.
 - I'm not responsible for any harm or damage this tool causes.
-- For more information see LICENSE.TXT
+- For more information see LICENSE
