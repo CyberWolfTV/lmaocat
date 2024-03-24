@@ -15,6 +15,9 @@
 #include "ANSI/ANSI.hpp"
 
 
+#define TAB 8
+
+
 Rainbow::Rainbow(const Args &settings):
             frequency(settings.frequency),
             spread   (settings.spread),
@@ -94,12 +97,17 @@ void Rainbow::print_plain(const std::wstring &line, State &ansi_state) const {
         if (ANSI::is_esc(line[i])) {
             ANSI::read(line, i, ansi_state);
             --i;
-            continue;
         }
-
-        this->ansi_handler.paint(rainbow(counter), line[i]);
-
-        ++counter;
+        else if (line[i] == '\t') {
+            for (int j = 0; j < TAB; ++j) {
+                this->ansi_handler.paint(rainbow(counter), L' ');
+                ++counter;
+            }
+        }
+        else {
+            this->ansi_handler.paint(rainbow(counter), line[i]);
+            ++counter;
+        }
     }
 }
 
