@@ -35,6 +35,17 @@ private:
     const long duration;
     const bool animate;
     const std::chrono::milliseconds sleep_time;
+
+
+    struct Signal_Handler {
+        void setup();
+
+    private:
+        static void handler(int signal);
+        bool handler_set = false;
+    };
+
+    static Signal_Handler signal_handler;
 };
 
 #endif

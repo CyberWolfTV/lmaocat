@@ -5,6 +5,7 @@
 #include <chrono>
 #include <string>
 #include <thread>
+#include <csignal>
 #include <climits>
 #include <cstddef>
 #include <sstream>
@@ -53,6 +54,10 @@ Rainbow::Rainbow(const Args &settings):
     }
 
     this->ansi_handler = ANSI{settings.invert};
+
+    if (this->truecolor_enabled) {
+        signal_handler.setup();
+    }
 }
 
 
@@ -152,4 +157,21 @@ RGB Rainbow::rainbow(const std::size_t index) const {
     const auto blue  = static_cast<int>(blue_f);
 
     return RGB{red, green, blue};
+}
+
+
+void Rainbow::Signal_Handler::setup() {
+    if (!this->handler_set) {
+        std::signal(SIGINT,  this->handler);
+        std::signal(SIGKILL, this->handler);
+        std::signal(SIGTERM, this->handler);
+
+        this->handler_set = true;
+    }
+}
+
+
+void Rainbow::Signal_Handler::handler(const int signal) {
+    ANSI::reset_ansi_in_terminal();
+    std::exit(128 + signal);
 }

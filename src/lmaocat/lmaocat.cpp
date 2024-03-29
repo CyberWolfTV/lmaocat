@@ -2,7 +2,6 @@
 
 #include <locale>
 #include <cstdio>
-#include <csignal>
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -12,7 +11,6 @@
 
 #include "Args/Args.hpp"
 #include "Rainbow/Rainbow.hpp"
-#include "Rainbow/ANSI/ANSI.hpp"
 
 namespace fs = std::filesystem;
 
@@ -27,10 +25,6 @@ void lmaocat::main(const int argc, char* argv[]) {
         version();
         std::exit(EXIT_SUCCESS);
     }
-
-    std::signal(SIGINT,  signal_handler);
-    std::signal(SIGKILL, signal_handler);
-    std::signal(SIGTERM, signal_handler);
 
     Rainbow lol(args);
 
@@ -129,10 +123,4 @@ bool lmaocat::is_accessable(const fs::path &file) {
     }
 
     return true;
-}
-
-
-void lmaocat::signal_handler(const int signal) {
-    ANSI::reset_ansi_in_terminal();
-    std::exit(128 + signal);
 }

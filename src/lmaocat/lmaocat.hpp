@@ -18,8 +18,6 @@ private:
     static void help(Rainbow &lol);
 
     static bool is_accessable(const fs::path &file);
-
-    static void signal_handler(int signal);
 };
 
 #endif
