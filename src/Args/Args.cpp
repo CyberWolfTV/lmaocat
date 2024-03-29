@@ -4,10 +4,7 @@
 #include <cerrno>
 #include <cstdlib>
 #include <cstring>
-#include <filesystem>
 #include <type_traits>
-
-namespace fs = std::filesystem;
 
 
 Args::Args(const int argc, char *argv[]) {
