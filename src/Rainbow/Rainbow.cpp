@@ -56,7 +56,7 @@ Rainbow::Rainbow(const Args &settings):
     this->ansi_handler = ANSI{settings.invert};
 
     if (this->truecolor_enabled) {
-        signal_handler.setup();
+        Signal_Handler::setup();
     }
 }
 
@@ -161,12 +161,14 @@ RGB Rainbow::rainbow(const std::size_t index) const {
 
 
 void Rainbow::Signal_Handler::setup() {
-    if (!this->handler_set) {
-        std::signal(SIGINT,  this->handler);
-        std::signal(SIGKILL, this->handler);
-        std::signal(SIGTERM, this->handler);
+    if (!handler_set) {
+        std::signal(SIGINT,  handler);
+        std::signal(SIGKILL, handler);
+        std::signal(SIGTERM, handler);
+        std::signal(SIGQUIT, handler);
+        std::signal(SIGABRT, handler);
 
-        this->handler_set = true;
+        handler_set = true;
     }
 }
 

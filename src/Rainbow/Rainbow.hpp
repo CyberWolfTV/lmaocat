@@ -38,14 +38,12 @@ private:
 
 
     struct Signal_Handler {
-        void setup();
+        static void setup();
 
     private:
         static void handler(int signal);
-        bool handler_set = false;
+        inline static bool handler_set = false;
     };
-
-    static Signal_Handler signal_handler;
 };
 
 #endif
