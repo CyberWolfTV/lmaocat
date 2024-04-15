@@ -17,7 +17,7 @@ private:
 
     static void help(Rainbow &lol);
 
-    static bool is_accessable(const fs::path &file);
+    static auto is_accessable(const fs::path &file) -> bool;
 };
 
 #endif

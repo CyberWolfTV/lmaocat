@@ -96,7 +96,7 @@ void lmaocat::help(Rainbow &lol) {
 }
 
 
-bool lmaocat::is_accessable(const fs::path &file) {
+auto lmaocat::is_accessable(const fs::path &file) -> bool {
     const     bool has_permissions = access(file.c_str(), R_OK) == 0;
     constexpr char perm_err[] = "Error: Permission denied! Cannot access this file: \"%s\"\n";
 

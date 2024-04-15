@@ -1,10 +1,16 @@
 #include "Args.hpp"
 
+#include <cstdint>
 #include <vector>
 #include <cerrno>
 #include <cstdlib>
 #include <cstring>
 #include <type_traits>
+
+
+#define MIN_SPEED    0.01
+#define MIN_SPREAD   0.1
+#define MIN_DURATION 1
 
 
 Args::Args(const int argc, char *argv[]) {
@@ -38,7 +44,7 @@ Args::Args(const int argc, char *argv[]) {
         if (get_value<double>("--spread", "-p", this->spread, i, argv)) {
             continue;
         }
-        if (get_value<long>("--seed", "-S", this->seed, i, argv)) {
+        if (get_value<std::int64_t>("--seed", "-S", this->seed, i, argv)) {
             continue;
         }
         if (get_value<double>("--freq", "-F", this->frequency, i, argv)) {
@@ -47,7 +53,7 @@ Args::Args(const int argc, char *argv[]) {
         if (get_value<double>("--speed", "-s", this->speed, i, argv)) {
             continue;
         }
-        if (get_value<long>("--duration", "-d", this->duration, i, argv)) {
+        if (get_value<std::int64_t>("--duration", "-d", this->duration, i, argv)) {
             continue;
         }
 
@@ -58,13 +64,13 @@ Args::Args(const int argc, char *argv[]) {
 }
 
 
-bool Args::is_arg(const char* full, const char* shortcut, const char* arg) {
+auto Args::is_arg(const char* full, const char* shortcut, const char* arg) -> bool {
     return (std::strcmp(arg, shortcut) == 0) || (std::strcmp(arg, full) == 0);
 }
 
 
 template<typename T>
-bool Args::get_value(const char* full, const char* shortcut, T &value, int &i, char* argv[]) {
+auto Args::get_value(const char* full, const char* shortcut, T &value, int &i, char* argv[]) -> bool {
     if (std::strcmp(shortcut, argv[i]) == 0) {
         value = get_number<T>(argv[i], argv[i+1]);
         ++i;
@@ -82,7 +88,7 @@ bool Args::get_value(const char* full, const char* shortcut, T &value, int &i, c
 
 
 template<typename T>
-T Args::get_number(const char* arg, const char* value) {
+auto Args::get_number(const char* arg, const char* value) -> T {
     if (value == nullptr) {
         invalid_arg_exit_error(arg, "NONE PROVIDED");
     }
@@ -94,8 +100,9 @@ T Args::get_number(const char* arg, const char* value) {
     if constexpr (std::is_same<T, double>()) {
         result = std::strtod(value, &end);
     }
-    else if constexpr (std::is_same<T, long>()) {
-        result = std::strtol(value, &end, 10);
+    else if constexpr (std::is_same<T, std::int64_t>()) {
+        constexpr int BASE = 10;
+        result = std::strtol(value, &end, BASE);
     }
 
     if (errno == ERANGE) {
@@ -112,17 +119,17 @@ T Args::get_number(const char* arg, const char* value) {
 
 
 void Args::validate() const {
-    if (this->spread < 0.1) {
+    if (this->spread < MIN_SPREAD) {
         std::fprintf(stderr, "Error: argument --spread must be >= 0.1.\n");
         std::exit(EXIT_FAILURE);
     }
 
-    if (this->speed < 0.01) {
+    if (this->speed < MIN_SPEED) {
         std::fprintf(stderr, "Error: argument --speed must be >= 0.1.\n");
         std::exit(EXIT_FAILURE);
     }
 
-    if (this->duration < 1) {
+    if (this->duration < MIN_DURATION) {
         std::fprintf(stderr, "Error: argument --duration must be >= 1.\n");
         std::exit(EXIT_FAILURE);
     }

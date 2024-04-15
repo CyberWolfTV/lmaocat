@@ -1,5 +1,6 @@
 #include "ANSI.hpp"
 
+#include <cwchar>
 #include <string>
 #include <cstdio>
 #include <cstddef>
@@ -27,67 +28,67 @@ ANSI::ANSI(const bool invert) {
  *   )
  */
 
-void ANSI::read(const std::wstring &line, std::size_t &i, State &s) {
-    std::putwchar(L'\x1B');
-    ++i; // cuz first one is ESC
-    s = State::ESC;
+void ANSI::read(const std::wstring &line, std::size_t &index, State &state) {
+    std::putwchar(ESC);
+    ++index; // cuz first one is ESC
+    state = State::ESC;
 
-    read_incomplete(line, i, s);
+    read_incomplete(line, index, state);
 }
 
 
-void ANSI::read_incomplete(const std::wstring &line, std::size_t &i, State &s) {
+void ANSI::read_incomplete(const std::wstring &line, std::size_t &index, State &state) {
     const std::size_t len = line.length();
-    while (i != len) {
-        int ascii_code = static_cast<unsigned char>(line[i]);
-        switch (s) {
+    while (index != len) {
+        int ascii_code = static_cast<unsigned char>(line[index]);
+        switch (state) {
             case State::ESC:
                 if (is_CSI(ascii_code)) {
-                    s = State::PARAM;
-                    std::putwchar(L'\x5B');
-                    ++i;
+                    state = State::PARAM;
+                    std::putwchar(CSI);
+                    ++index;
                 }
                 else if (is_in_c_zero(ascii_code)) {
-                    s = State::NONE;
-                    std::putwchar(line[i]);
-                    ++i;
+                    state = State::NONE;
+                    std::putwchar(line[index]);
+                    ++index;
                 }
                 else {
-                    s = State::NONE;
+                    state = State::NONE;
                     return;
                 }
                 break;
 
             case State::PARAM:
                 while (is_in_param(ascii_code)) {
-                    std::putwchar(line[i]);
-                    ++i;
-                    if (i == len) {
+                    std::putwchar(line[index]);
+                    ++index;
+                    if (index == len) {
                         return;
                     }
-                    ascii_code = static_cast<unsigned char>(line[i]);
+                    ascii_code = static_cast<unsigned char>(line[index]);
                 }
-                s = State::INTER;
+                state = State::INTER;
                 break;
 
             case State::INTER:
                 while (is_in_inter(ascii_code)) {
-                    std::putwchar(line[i]);
-                    ++i;
-                    if (i == len) {
+                    std::putwchar(line[index]);
+                    ++index;
+                    if (index == len) {
                         return;
                     }
-                    ascii_code = static_cast<unsigned char>(line[i]);
+                    ascii_code = static_cast<unsigned char>(line[index]);
                 }
-                s = State::FINAL;
+                state = State::FINAL;
                 break;
 
             case State::FINAL:
                 if (is_in_final(ascii_code)) {
-                    std::putwchar(line[i]);
-                    ++i;
+                    std::putwchar(line[index]);
+                    ++index;
                 }
-                s = State::NONE;
+                state = State::NONE;
                 return;
 
             case State::NONE:
